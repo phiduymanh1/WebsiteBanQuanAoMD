@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<body>
+
+<!-- Header -->
+<div th:replace="Fragments/header :: header"></div>
+
+<!-- Navbar -->
+<div th:replace="Fragments/navbar :: navbar"></div>
+
+<!-- Nội dung chính -->
+<main class="container mt-4">
+    <h1>Chào mừng đến với ShopQuầnÁo</h1>
+    <p>Chúng tôi cung cấp các sản phẩm thời trang chất lượng cao.</p>
+</main>
+
+<!-- Footer -->
+<div th:replace="Fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
