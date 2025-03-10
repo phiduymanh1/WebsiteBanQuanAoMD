@@ -14,8 +14,5 @@ public class OrderServices {
     public OrderServices(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
-    public void findAll(Pageable pageable) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
 
-    }
 }

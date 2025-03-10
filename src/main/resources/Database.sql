@@ -1,6 +1,6 @@
-CREATE DATABASE ShopQuanAoMK
+CREATE DATABASE ShopQuanAo
 
-USE ShopQuanAoMK
+USE ShopQuanAo
 
 -- Bảng người dùng
 CREATE TABLE users (
