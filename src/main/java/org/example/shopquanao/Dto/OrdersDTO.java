@@ -16,12 +16,14 @@ import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class OrdersDTO {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer userId;
+    private String fullName;
     private BigDecimal totalPrice;
     private String status;
     private OffsetDateTime createdAt;
@@ -30,24 +32,42 @@ public class OrdersDTO {
 
     public static OrdersDTO convertDto(Order order) {
         OrdersDTO dto = new OrdersDTO();
+        dto.setId(order.getId());
         dto.setUserId(order.getUser().getId());
+        dto.setFullName(order.getUser().getFullName());
         dto.setTotalPrice(order.getTotalPrice());
         dto.setStatus(order.getStatus().name());
         dto.setCreatedAt(order.getCreatedAt());
+        if (order.getOrderItems() != null){
+            dto.setOrderItems(order.getOrderItems().stream()
+                    .map(OrderItemDto::convertDto).collect(Collectors.toList()));
+        }
+        if (order.getPayments() != null){
+            dto.setPayments(order.getPayments().stream().map(PaymentDto::convertDto).toList());
+        }
         return dto;
     }
 
     public OrdersDTO() {
     }
 
-    public OrdersDTO(Integer id, Integer userId, BigDecimal totalPrice, String status, OffsetDateTime createdAt, List<OrderItemDto> orderItems, List<PaymentDto> payments) {
+    public OrdersDTO(Integer id, Integer userId, String fullName, BigDecimal totalPrice, String status, OffsetDateTime createdAt, List<OrderItemDto> orderItems, List<PaymentDto> payments) {
         this.id = id;
         this.userId = userId;
+        this.fullName = fullName;
         this.totalPrice = totalPrice;
         this.status = status;
         this.createdAt = createdAt;
         this.orderItems = orderItems;
         this.payments = payments;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public Integer getId() {
