@@ -26,5 +26,9 @@ public class OrderServices {
         return ordersPage.map(OrdersDTO::convertDto);
     }
 
+//    public
+    public OrdersDTO detail(Integer id) {
 
+        return null;
+    }
 }
