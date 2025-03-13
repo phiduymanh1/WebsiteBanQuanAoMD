@@ -1,7 +1,7 @@
 ﻿-- Tạo cơ sở dữ liệu
-CREATE DATABASE ShopQuanAoMK;
+CREATE DATABASE ShopQuanAo;
 go
-USE ShopQuanAoMK;
+USE ShopQuanAo;
 go
 -- Bảng người dùng
 CREATE TABLE users (
