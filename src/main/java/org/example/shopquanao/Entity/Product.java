@@ -1,8 +1,7 @@
 package org.example.shopquanao.Entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -10,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 
 
 @Entity
@@ -41,19 +41,18 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "product" ,cascade = CascadeType.ALL, orphanRemoval = true)
+
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> cartItems = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> orderItems = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductDetail> productDetails = new LinkedHashSet<>();
 
     public Product() {
     }
 
-    public Product(Integer id, String name, String description, BigDecimal price, Category category, String imageUrl, Set<CartItem> cartItems, Set<OrderItem> orderItems, Set<ProductDetail> productDetails) {
+    public Product(Integer id, String name, String description, BigDecimal price, Category category, String imageUrl, Set<CartItem> cartItems, Set<ProductDetail> productDetails) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -61,7 +60,6 @@ public class Product {
         this.category = category;
         this.imageUrl = imageUrl;
         this.cartItems = cartItems;
-        this.orderItems = orderItems;
         this.productDetails = productDetails;
     }
 
@@ -113,20 +111,13 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+
     public Set<CartItem> getCartItems() {
         return cartItems;
     }
 
     public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
-    }
-
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(Set<OrderItem> orderItems) {
-        this.orderItems = orderItems;
     }
 
     public Set<ProductDetail> getProductDetails() {
