@@ -1,5 +1,6 @@
 package org.example.shopquanao.Services;
 
+import jakarta.transaction.Transactional;
 import org.example.shopquanao.Dto.OrderItemDto;
 import org.example.shopquanao.Dto.OrdersDTO;
 import org.example.shopquanao.Entity.Order;
@@ -26,9 +27,9 @@ public class OrderServices {
         return ordersPage.map(OrdersDTO::convertDto);
     }
 
-//    public
-    public OrdersDTO detail(Integer id) {
 
-        return null;
+    public OrdersDTO detail(Integer id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        return OrdersDTO.convertDto(order);
     }
 }

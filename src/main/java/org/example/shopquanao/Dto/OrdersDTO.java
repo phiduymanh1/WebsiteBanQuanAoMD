@@ -125,4 +125,18 @@ public class OrdersDTO {
     public void setPayments(List<PaymentDto> payments) {
         this.payments = payments;
     }
+
+    @Override
+    public String toString() {
+        return "OrdersDTO{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", fullName='" + fullName + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", status='" + status + '\'' +
+                ", createdAt=" + createdAt +
+                ", orderItems=" + orderItems +
+                ", payments=" + payments +
+                '}';
+    }
 }
