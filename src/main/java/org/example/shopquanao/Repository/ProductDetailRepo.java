@@ -1,2 +1,3 @@
-package org.example.shopquanao.Repository;public interface ProductDetailRepo {
+package org.example.shopquanao.Repository;
+public interface ProductDetailRepo {
 }
