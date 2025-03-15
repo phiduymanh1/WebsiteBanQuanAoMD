@@ -81,11 +81,11 @@ CREATE TABLE orders (
 CREATE TABLE order_items (
                              id INT IDENTITY(1,1) PRIMARY KEY,
                              order_id INT NOT NULL,
-                             productDetail_id INT NOT NULL,
+                             product_detail_id INT NOT NULL,
                              quantity INT NOT NULL CHECK (quantity > 0),
                              price DECIMAL(10,2) NOT NULL CHECK (price >= 0),
                              FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-                             FOREIGN KEY (productDetail_id) REFERENCES product_detail(id) ON DELETE CASCADE
+                             FOREIGN KEY (product_detail_id) REFERENCES product_detail(id) ON DELETE CASCADE
 );
 
 -- Bảng giỏ hàng
@@ -207,7 +207,7 @@ VALUES
     (5, 250000, N'PENDING');
 
 -- Bảng order_items
-INSERT INTO order_items (order_id, productDetail_id, quantity, price)
+INSERT INTO order_items (order_id, product_detail_id, quantity, price)
 VALUES 
     (1, 1, 1, 300000),
     (2, 2, 1, 600000),
@@ -237,3 +237,5 @@ VALUES
 select * from product_detail
 select * from products
 
+ALTER TABLE orders
+DROP CONSTRAINT DF__orders__created___534D60F1;

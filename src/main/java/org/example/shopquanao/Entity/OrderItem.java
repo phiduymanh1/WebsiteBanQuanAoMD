@@ -25,7 +25,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "product Detail_id", nullable = false)
+    @JoinColumn(name = "product_detail_id", nullable = false)
     private ProductDetail productDetail;
 
     @Column(name = "quantity", nullable = false)
