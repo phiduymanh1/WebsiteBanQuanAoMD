@@ -13,7 +13,15 @@ public class SizeService {
         this.sizeRepository = sizeRepository;
     }
 
+    public List<Size> distinctSize(int id) {
+        return sizeRepository.findByProductId(id);
+    }
+
     public List<Size>getAll() {
         return sizeRepository.findAll();
+    }
+
+    public Size getById(int id) {
+        return sizeRepository.findById(id).get();
     }
 }

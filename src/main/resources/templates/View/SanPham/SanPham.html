@@ -50,14 +50,14 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <div class="col" th:each="product : ${products}">
             <div class="card h-100">
-                <a th:href="@{/sanPham/detail/{id} (id = ${product.id})}">
-                    <img th:src="@{/images/{image} (image = ${product.imageUrl})}" class="card-img-top" style="width: 100%; height: 300px" alt="Ảnh sản phẩm">
+                <a th:href="@{/sanPham/detail/{id}/{brandId} (id = ${product.id}, brandId=${product.productDetails[0] !=null ? product.productDetails[0].brand.id : ''})}">
+                    <img th:src="@{/images/{image} (image =${product.imageUrl})}" class="card-img-top" style="width: 100%; height: 300px" alt="Ảnh sản phẩm">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title" th:text="${product.name}">Tên sản phẩm</h5>
                     <p class="card-text text-muted" th:text="'Giá: ' + ${product.price} + ' VND'">Giá sản phẩm</p>
                     <p class="card-text text-muted" th:text="'Mô tả: ' + ${product.description}">Mô tả</p>
-                    <a class="btn btn-primary" th:href="@{/sanPham/detail/{id} (id = ${product.id})}">Xem chi tiết</a>
+                    <a class="btn btn-primary" th:href="@{/sanPham/detail/{id}/{brandId} (id = ${product.id}, brandId=${product.productDetails[0] !=null ? product.productDetails[0].brand.id : ''})}">Xem chi tiết</a>
                 </div>
             </div>
         </div>

@@ -259,3 +259,39 @@ VALUES
 select * from product_detail
 select * from products
 select * from order_items
+
+select sp.id, sp.name, sp.description, s.name, c.name from product_detail prodt
+join products sp on sp.id = prodt.product_id
+join sizes s on s.id = prodt.size_id
+join colors c on c.id = prodt.color_id
+where sp.id =1 
+group by sp.id, s.name, c.name, sp.name, sp.description
+
+ALTER TABLE colors
+DROP CONSTRAINT UQ__colors__72E12F1B8272DFCD;
+
+
+
+SELECT 
+    p.id AS product_id, 
+    p.name AS product_name, 
+    p.description, 
+    c.id AS color_id, 
+    c.name AS color_name
+FROM products p
+JOIN product_detail pd ON p.id = pd.product_id
+JOIN colors c ON pd.color_id = c.id
+Join sizes s on s.id =  pd.size_id
+WHERE p.id = 1
+GROUP BY p.id, p.name, p.description, c.id, c.name
+
+SELECT DISTINCT 
+    c.id AS color_id, 
+    c.name AS color_name
+FROM product_detail pd
+JOIN colors c ON pd.color_id = c.id
+WHERE pd.product_id = 1;
+
+
+
+

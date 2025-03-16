@@ -13,7 +13,15 @@ public class ColorServices {
          this.colorRepository = colorRepository;
     }
 
+    public List<Color> distinctColor(int id) {
+        return colorRepository.findByProductId(id);
+    }
+
     public List<Color> findAll() {
         return colorRepository.findAll();
+    }
+
+    public Color findById(int id) {
+        return colorRepository.findById(id).get();
     }
 }

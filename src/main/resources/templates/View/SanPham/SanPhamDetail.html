@@ -23,27 +23,35 @@
                 <img th:src="@{/images/{image} (image=${sanPham.imageUrl})}"
                      alt="Ảnh sản phẩm"
                      class="img-fluid rounded"
-                     style="max-width: 100%; height: auto;">
+                     style="max-width: 400px; height: 400px;">
             </div>
 
             <!-- Cột thông tin sản phẩm (bên phải) -->
             <div class="col-md-6">
                 <h2 th:text="${sanPham.name}" class="fw-bold"></h2>
                 <p th:text="${sanPham.description}" class="text-muted"></p>
-                <th:block th:each="detail, iterStat : ${productDetails}">
-                    <p th:if="${iterStat.first}">Brand: <span th:text="${detail.brand.name}"></span></p>
-                    <p th:if="${iterStat.first}">Brand: <span th:text="${detail.brand.name}"></span></p>
-                </th:block>
-
-
-
                 <!-- Giá gốc -->
                 <p th:text="'Giá: ' + ${#numbers.formatInteger(sanPham.price, 3, 'COMMA')} + ' VND'"
                    class="fw-bold text-danger">
                 </p>
+                Thương hiệu: <span th:text="${brand.name}"></span> <br>
+<!--                <p th:text="${productDetail[0].color.name}"></p>-->
+                Màu:
+                <span th:each="c : ${colors}">
+                    <input type="radio" th:id="'color' + ${c.id}" th:value="${c.id}" class="check-form-input" name="colors">
+                    <label th:for="'color' + ${c.id}" th:text="${c.name}"></label>
+                </span> <br>
 
-                <!-- Tăng/Giảm số lượng -->
+                Size:
+                <span th:each="s : ${size}">
+                    <input type="radio" th:id="'size' + ${s.id}" th:value="${s.id}" class="check-form-input" name="size">
+                    <label th:for="'size' + ${s.id}" th:text="${s.name}"></label>
+                </span>
 
+                Số Lượng:
+                <button>-</button>
+                <input type="number" th:value="${sanPham.productDetails[0].stock}" id="stockInput">
+                <button>+</button>
 
                 <input type="hidden" name="selectedColor" id="selectedColor">
 
@@ -63,5 +71,15 @@
 </main>
 
 </body>
+
+<script>
+    function updateStock() {
+        const selectedSize = document.getElementById('input[name="size"]:checked');
+        const selectedColor = document.getElementById('input[name="color"]:checked');
+
+
+        
+    }
+</script>
 
 </html>
