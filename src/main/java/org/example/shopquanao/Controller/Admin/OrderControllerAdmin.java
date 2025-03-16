@@ -43,7 +43,7 @@ public class OrderControllerAdmin {
         model.addAttribute("ordersDTO", viewOrdersAdminDTO);
         List<OrderStatus> listStt = Arrays.asList(OrderStatus.values());
         model.addAttribute("listStt", listStt);
-//        viewOrdersAdminDTO.getOrderItems().forEach(System.out::println);
+        viewOrdersAdminDTO.getOrderItems().forEach(System.out::println);
 
         return "View/Order/Admin/DetailOrder";
     }

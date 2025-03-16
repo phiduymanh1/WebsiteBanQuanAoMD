@@ -44,7 +44,7 @@ public class ProductsController {
     public String hienThi(Model model, @ModelAttribute("sanPham") Product product) {
         List<Product> products = productsServices.getProducts();
         model.addAttribute("products", products);
-        return "/View/SanPham/SanPham.html";
+        return "View/SanPham/SanPham";
     }
 
 
