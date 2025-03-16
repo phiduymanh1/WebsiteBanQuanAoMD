@@ -1,13 +1,6 @@
-package org.example.shopquanao.Dto;
+package org.example.shopquanao.Dto.AdminDto;
 
-import jakarta.persistence.*;
-import org.example.shopquanao.Entity.Order;
 import org.example.shopquanao.Entity.Payment;
-import org.example.shopquanao.Enum.PaymentMethod;
-import org.example.shopquanao.Enum.PaymentStatus;
-import org.hibernate.annotations.Nationalized;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 public class PaymentDto {
 

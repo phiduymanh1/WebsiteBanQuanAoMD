@@ -1,30 +1,30 @@
 package org.example.shopquanao;
 
-import org.example.shopquanao.Services.OrderServices;
+import org.example.shopquanao.Dto.AdminDto.ViewOrdersAdminDTO;
+import org.example.shopquanao.Services.Admin.AdminOrderServices;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
 public class ShopQuanAoApplication implements CommandLineRunner {
-    private final OrderServices orderServices;
+    private final AdminOrderServices orderServices;
 
-    public ShopQuanAoApplication(OrderServices orderServices) {
+    public ShopQuanAoApplication(AdminOrderServices orderServices) {
         this.orderServices = orderServices;
     }
 
     public static void main(String[] args) {
         SpringApplication.run(ShopQuanAoApplication.class, args);
+
     }
 
     @Override
     public void run(String... args) throws Exception {
-//        OrdersDTO ordersDTO = orderServices.detail(1);
-//
-//        if (ordersDTO.getOrderItems() != null && !ordersDTO.getOrderItems().isEmpty()) {
-//            ordersDTO.getOrderItems().forEach(System.out::println);
-//        } else {
-//            System.out.println("Danh sách orderItems trống!");
-//        }
+
     }
 }
