@@ -5,10 +5,6 @@ import org.example.shopquanao.Services.Admin.AdminOrderServices;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
 public class ShopQuanAoApplication implements CommandLineRunner {

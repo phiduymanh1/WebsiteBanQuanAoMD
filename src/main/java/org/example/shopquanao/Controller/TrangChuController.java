@@ -11,4 +11,10 @@ public class TrangChuController {
     public String home(){
         return "/View/Home/TrangChu.html";
     }
+
+    @GetMapping("/sanPham")
+    public String sanPham(){
+        return "/View/Home/SanPham.html";
+    }
+
 }

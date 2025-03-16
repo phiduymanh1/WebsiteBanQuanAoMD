@@ -156,45 +156,45 @@ VALUES
 -- Bảng products
 INSERT INTO products (name, description, price, category_id, image_url)
 VALUES 
-    (N'Áo thun basic', N'Áo thun cổ tròn chất liệu cotton', 300000, 1, N'aothun.png'),
-    (N'Quần jeans nam', N'Quần jeans nam ống đứng', 600000, 2, N'quanjeans.png'),
-    (N'Váy maxi nữ', N'Váy maxi phù hợp cho đi biển', 500000, 3, N'vaymaxi.png'),
-    (N'Giày sneaker', N'Giày thể thao năng động', 800000, 4, N'sneaker.png'),
-    (N'Nón bucket', N'Nón bucket chống nắng', 250000, 5, N'nonbucket.png');
+    (N'Áo thun basic', N'Áo thun cổ tròn chất liệu cotton', 300000, 1, N'aothun.jpg'),
+    (N'Quần jeans nam', N'Quần jeans nam ống đứng', 600000, 2, N'quanjeans.jpg'),
+    (N'Váy maxi nữ', N'Váy maxi phù hợp cho đi biển', 500000, 3, N'vaymaxi.jpg'),
+    (N'Giày sneaker', N'Giày thể thao năng động', 800000, 4, N'sneaker.jpg'),
+    (N'Nón bucket', N'Nón bucket chống nắng', 250000, 5, N'nonbucket.jpg');
 
 -- Bảng product_detail
 -- Bảng product_detail: Mỗi sản phẩm có 2 màu và 2 size
 INSERT INTO product_detail (product_id, color_id, size_id, brand_id, stock, image_url)
 VALUES 
     -- Sản phẩm 1: Áo thun basic
-    (1, 1, 1, 5, 50, N'aothun.png'), -- Đỏ, size S
-    (1, 1, 2, 5, 50, N'aothun.png'), -- Đỏ, size M
-    (1, 2, 1, 5, 50, N'aothun.png'), -- Xanh, size S
-    (1, 2, 2, 5, 50, N'aothun.png'), -- Xanh, size M
+    (1, 1, 1, 5, 50, N'aothun.jpg'), -- Đỏ, size S
+    (1, 1, 2, 5, 50, N'aothun.jpg'), -- Đỏ, size M
+    (1, 2, 1, 5, 50, N'aothun.jpg'), -- Xanh, size S
+    (1, 2, 2, 5, 50, N'aothun.jpg'), -- Xanh, size M
     
     -- Sản phẩm 2: Quần jeans nam
-    (2, 3, 3, 1, 30, N'jeans.png'), -- Đen, size L
-    (2, 3, 4, 1, 30, N'jeans.png'), -- Đen, size XL
-    (2, 4, 3, 1, 30, N'jeans.png'), -- Trắng, size L
-    (2, 4, 4, 1, 30, N'jeans.png'), -- Trắng, size XL
+    (2, 3, 3, 1, 30, N'jeans.jpg'), -- Đen, size L
+    (2, 3, 4, 1, 30, N'jeans.jpg'), -- Đen, size XL
+    (2, 4, 3, 1, 30, N'jeans.jpg'), -- Trắng, size L
+    (2, 4, 4, 1, 30, N'jeans.jpg'), -- Trắng, size XL
     
     -- Sản phẩm 3: Váy maxi nữ
-    (3, 1, 1, 2, 40, N'vay.png'), -- Đỏ, size S
-    (3, 1, 2, 2, 40, N'vay.png'), -- Đỏ, size M
-    (3, 2, 1, 2, 40, N'vay.png'), -- Xanh, size S
-    (3, 2, 2, 2, 40, N'vay.png'), -- Xanh, size M
+    (3, 1, 1, 2, 40, N'vay.jpg'), -- Đỏ, size S
+    (3, 1, 2, 2, 40, N'vay.jpg'), -- Đỏ, size M
+    (3, 2, 1, 2, 40, N'vay.jpg'), -- Xanh, size S
+    (3, 2, 2, 2, 40, N'vay.jpg'), -- Xanh, size M
     
     -- Sản phẩm 4: Giày sneaker
-    (4, 3, 3, 3, 60, N'sneaker.png'), -- Đen, size L
-    (4, 3, 4, 3, 60, N'sneaker.png'), -- Đen, size XL
-    (4, 2, 3, 3, 60, N'sneaker.png'), -- Xanh, size L
-    (4, 2, 4, 3, 60, N'sneaker.png'), -- Xanh, size XL
+    (4, 3, 3, 3, 60, N'sneaker.jpg'), -- Đen, size L
+    (4, 3, 4, 3, 60, N'sneaker.jpg'), -- Đen, size XL
+    (4, 2, 3, 3, 60, N'sneaker.jpg'), -- Xanh, size L
+    (4, 2, 4, 3, 60, N'sneaker.jpg'), -- Xanh, size XL
     
     -- Sản phẩm 5: Nón bucket
-    (5, 4, 1, 4, 70, N'non.png'), -- Trắng, size S
-    (5, 4, 2, 4, 70, N'non.png'), -- Trắng, size M
-    (5, 5, 1, 4, 70, N'non.png'), -- Be, size S
-    (5, 5, 2, 4, 70, N'non.png'); -- Be, size M
+    (5, 4, 1, 4, 70, N'non.jpg'), -- Trắng, size S
+    (5, 4, 2, 4, 70, N'non.jpg'), -- Trắng, size M
+    (5, 5, 1, 4, 70, N'non.jpg'), -- Be, size S
+    (5, 5, 2, 4, 70, N'non.jpg'); -- Be, size M
 
 
 -- Bảng orders
@@ -209,11 +209,33 @@ VALUES
 -- Bảng order_items
 INSERT INTO order_items (order_id, product_detail_id, quantity, price)
 VALUES 
+    
     (1, 1, 1, 300000),
-    (2, 2, 1, 600000),
-    (3, 3, 1, 500000),
-    (4, 4, 1, 800000),
-    (5, 5, 1, 250000);
+    (1, 2, 1, 300000),
+    (1, 3, 1, 300000),
+    (1, 4, 1, 300000),
+
+    (2, 5, 1, 600000),
+    (2, 6, 1, 600000),
+    (2, 7, 1, 600000),
+    (2, 8, 1, 600000),
+
+ 
+    (3, 9, 1, 500000),
+    (3, 10, 1, 500000),
+    (3, 11, 1, 500000),
+    (3, 12, 1, 500000),
+
+    (4, 13, 1, 800000),
+    (4, 14, 1, 800000),
+    (4, 15, 1, 800000),
+	(4, 16, 1, 800000),
+
+	(5, 17, 1, 250000),
+    (5, 18, 1, 250000),
+    (5, 19, 1, 250000),
+	(5, 20, 1, 250000);
+
 
 -- Bảng cart_items
 INSERT INTO cart_items (user_id, product_id, quantity)
@@ -236,6 +258,42 @@ VALUES
 
 select * from product_detail
 select * from products
+select * from order_items
+
+select sp.id, sp.name, sp.description, s.name, c.name from product_detail prodt
+join products sp on sp.id = prodt.product_id
+join sizes s on s.id = prodt.size_id
+join colors c on c.id = prodt.color_id
+where sp.id =1 
+group by sp.id, s.name, c.name, sp.name, sp.description
+
+ALTER TABLE colors
+DROP CONSTRAINT UQ__colors__72E12F1B8272DFCD;
+
+
+
+SELECT 
+    p.id AS product_id, 
+    p.name AS product_name, 
+    p.description, 
+    c.id AS color_id, 
+    c.name AS color_name
+FROM products p
+JOIN product_detail pd ON p.id = pd.product_id
+JOIN colors c ON pd.color_id = c.id
+Join sizes s on s.id =  pd.size_id
+WHERE p.id = 1
+GROUP BY p.id, p.name, p.description, c.id, c.name
+
+SELECT DISTINCT 
+    c.id AS color_id, 
+    c.name AS color_name
+FROM product_detail pd
+JOIN colors c ON pd.color_id = c.id
+WHERE pd.product_id = 1;
+
+
+
 
 ALTER TABLE orders
 DROP CONSTRAINT DF__orders__created___534D60F1;
