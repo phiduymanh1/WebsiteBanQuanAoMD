@@ -23,7 +23,7 @@
                 <img th:src="@{/images/{image} (image=${sanPham.imageUrl})}"
                      alt="Ảnh sản phẩm"
                      class="img-fluid rounded"
-                     style="max-width: 400px; height: 400px;">
+                     style="max-width: 600px; height: 600px;">
             </div>
 
             <!-- Cột thông tin sản phẩm (bên phải) -->
@@ -46,7 +46,7 @@
                 <span th:each="s : ${size}">
                     <input type="radio" th:id="'size' + ${s.id}" th:value="${s.id}" class="check-form-input" name="size">
                     <label th:for="'size' + ${s.id}" th:text="${s.name}"></label>
-                </span>
+                </span> <br>
 
                 Số Lượng:
                 <button>-</button>
@@ -73,13 +73,7 @@
 </body>
 
 <script>
-    function updateStock() {
-        const selectedSize = document.getElementById('input[name="size"]:checked');
-        const selectedColor = document.getElementById('input[name="color"]:checked');
 
-
-        
-    }
 </script>
 
 </html>
