@@ -295,3 +295,5 @@ WHERE pd.product_id = 1;
 
 
 
+ALTER TABLE orders
+DROP CONSTRAINT DF__orders__created___534D60F1;

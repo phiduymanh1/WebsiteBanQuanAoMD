@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detail</title>
+</head>
+<body>
+<!--<div th:replace="Fragments/header::header"></div>-->
+<!--<div th:replace="Fragments/navbar::navbar"></div>-->
+<form th:action="@{/order/update}" th:object="${ordersDTO}" method="post">
+    <div class="mb-3">
+        <label class="form-label">Mã đơn hàng:</label>
+        <input type="text" class="form-control" th:field="*{id}" readonly>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Khách hàng:</label>
+        <input type="text" class="form-control" th:field="*{fullName}" >
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Tổng tiền:</label>
+        <input type="text" class="form-control" th:field="*{totalPrice}" readonly>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Trạng thái:</label>
+<!--        <input type="text" class="form-control" th:field="*{status}" >-->
+        <select class="form-select" th:field="*{status}">
+            <option th:each="stt: ${listStt}" th:value="${stt}" th:text="${stt}">
+            </option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Thời gian:</label>
+        <input type="text" class="form-control" th:value="${#temporals.format(ordersDTO.getCreatedAt(), 'yyyy-MM-dd HH:mm:ss')}">
+    </div>
+
+    <h5>Sản phẩm trong đơn hàng:</h5>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Hình ảnh</th>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Màu</th>
+            <th>Size</th>
+            <th>Brand</th>
+            <th>Giá</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${ordersDTO.orderItems}">
+            <td>
+                <img th:src="${item.productImage}" alt="Hình ảnh sản phẩm" width="50">
+            </td>
+            <td th:text="${item.productName}"></td>
+<!--            <td th:text="${item.quantity}"></td>-->
+            <td>
+                <input class="form-control" type="number" th:value="${item.quantity}">
+            </td>
+            <td th:text="${item.color}"></td>
+            <td th:text="${item.size}"></td>
+            <td th:text="${item.brand}"></td>
+            <td th:text="${item.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <button class="btn" type="submit">Update</button>
+</form>
+
+
+<!--<div class="mt-auto" th:replace="Fragments/footer::footer"></div>-->
+</body>
+</html>
