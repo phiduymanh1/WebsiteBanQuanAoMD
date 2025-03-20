@@ -25,8 +25,8 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "product_detail_id", nullable = false)
+    private ProductDetail productDetail;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -37,10 +37,10 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(Integer id, Order order, Product product, Integer quantity, BigDecimal price) {
+    public OrderItem(Integer id, Order order, ProductDetail productDetail, Integer quantity, BigDecimal price) {
         this.id = id;
         this.order = order;
-        this.product = product;
+        this.productDetail = productDetail;
         this.quantity = quantity;
         this.price = price;
     }
@@ -61,12 +61,12 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Product getProduct() {
-        return product;
+    public ProductDetail getProductDetail() {
+        return productDetail;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductDetail(ProductDetail productDetail) {
+        this.productDetail = productDetail;
     }
 
     public Integer getQuantity() {
