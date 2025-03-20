@@ -2,25 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Header</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <title></title>
 </head>
 <body>
-<div th:fragment="adminHeader">
-  <header class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-    <a class="navbar-brand" th:href="@{/admin/home}">Admin Dashboard</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="adminNavbar">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" th:href="@{/admin/orders}">Đơn hàng</a></li>
-        <li class="nav-item"><a class="nav-link" th:href="@{/admin/products}">Sản phẩm</a></li>
-        <li class="nav-item"><a class="nav-link" th:href="@{/admin/users}">Người dùng</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" th:href="@{/logout}">Đăng xuất</a></li>
-      </ul>
+<div th:fragment="footer" >
+  <footer class="bg-dark text-light text-center p-4 mt-auto">
+    <div class="container">
+      <p>&copy; 2025 ShopQuầnÁoMK - All Rights Reserved</p>
+      <p>Email: manhphi698@gmail.com | Hotline: 0395346930</p>
+      <div>
+        <a href="https://www.facebook.com/" class="text-light me-3"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.instagram.com/" class="text-light me-3"><i class="bi bi-instagram"></i></a>
+        <a href="https://x.com/?lang=vi" class="text-light"><i class="bi bi-twitter"></i></a>
+      </div>
     </div>
-  </header>
+  </footer>
 </div>
+
 </body>
 </html>

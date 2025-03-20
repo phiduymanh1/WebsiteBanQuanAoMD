@@ -3,6 +3,7 @@ package org.example.shopquanao.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Nationalized;
 
 import java.util.LinkedHashSet;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 
 @Entity
+@ToString
 @Table(name = "colors")
 public class Color {
     @Id

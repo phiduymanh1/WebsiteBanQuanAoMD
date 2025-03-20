@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>Detail</title>
@@ -53,13 +52,33 @@
                 <img th:src="${item.productImage}" alt="Hình ảnh sản phẩm" width="50">
             </td>
             <td th:text="${item.productName}"></td>
-<!--            <td th:text="${item.quantity}"></td>-->
             <td>
                 <input class="form-control" type="number" th:value="${item.quantity}">
             </td>
-            <td th:text="${item.color}"></td>
-            <td th:text="${item.size}"></td>
-            <td th:text="${item.brand}"></td>
+            <td  >
+                <select class="form-select" >
+                    <option th:each="color : ${listColor}"
+                            th:value="${color.id}"
+                            th:text="${color.name}"
+                            th:selected="${color.name == item.color}"></option>
+                </select>
+            </td>
+            <td>
+                <select class="form-select">
+                    <option th:each="size: ${listSize}"
+                            th:value="${size.id}"
+                            th:text="${size.name}"
+                            th:selected="${size.name == item.size}"></option>
+                </select>
+            </td>
+            <td >
+                <select class="form-select">
+                    <option th:each="brand: ${listBrand}"
+                            th:value="${brand.id}"
+                            th:text="${brand.name}"
+                            th:selected="${brand.name == item.brand}"></option>
+                </select>
+            </td>
             <td th:text="${item.price}"></td>
         </tr>
         </tbody>
