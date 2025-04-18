@@ -3,6 +3,7 @@ package org.example.shopquanao.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.shopquanao.Dto.AdminDto.OrderItemCreateRequest;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -83,5 +84,16 @@ public class OrderItem {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public static OrderItem formCreateRequest(OrderItemCreateRequest request, Order order ,ProductDetail productDetail) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+        orderItem.setId(request.getOrderItemId());
+        orderItem.setProductDetail(productDetail);
+        orderItem.setQuantity(request.getQuantity());
+        orderItem.setPrice(request.getPrice());
+
+        return orderItem;
     }
 }

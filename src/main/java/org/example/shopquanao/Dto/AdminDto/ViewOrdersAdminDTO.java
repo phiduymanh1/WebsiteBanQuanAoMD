@@ -30,8 +30,8 @@ public class ViewOrdersAdminDTO {
     public static ViewOrdersAdminDTO convertDto(Order order) {
         ViewOrdersAdminDTO dto = new ViewOrdersAdminDTO();
         dto.setId(order.getId());
-        dto.setUserId(order.getUser().getId());
-        dto.setFullName(order.getUser().getFullName());
+        dto.setUserId(order.getUser() != null ? order.getUser().getId() : null);  // Xử lý null
+        dto.setFullName(order.getUser() != null ? order.getUser().getFullName() : "Khách vãng lai");  // Đặt tên mặc định
         dto.setTotalPrice(order.getTotalPrice());
         dto.setStatus(order.getStatus().name());
         dto.setCreatedAt(order.getCreatedAt());

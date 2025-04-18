@@ -10,8 +10,14 @@
 <div th:replace="Fragments/Admin/admin-header::adminHeader"></div>
 <!--<div th:replace="Fragments/Users/navbar :: navbar"></div>-->
 
+<!--<form th:action="@{/admin/order/search}" method="get">-->
+<!--    <select >-->
+<!--        <option value=""></option>-->
+<!--    </select>-->
+<!--</form>-->
+
 <main class="container flex-grow-1 mt-4">
-    <a th:href="@{/admin/order/showAdd}"><button type="submit" class="btn btn-primary" >Thêm mới</button></a> <br> <br>
+    <a th:href="@{/admin/order/add}"><button type="submit" class="btn btn-primary" >Thêm mới</button></a> <br> <br>
     <table class="table">
         <thead>
         <tr>
@@ -35,7 +41,9 @@
                 <button class="btn btn-link" th:attr="onclick=|loadOrderDetail(${orderDto.id})|">
                 <i class="bi bi-eye"></i>
                 </button>
+                <a th:if="${orderDto.status == 'PENDING'}" th:href="@{/admin/order/banHang/{id}(id =${orderDto.id})}"><button type="submit" class="btn btn-primary" >Bán hàng</button></a> <br> <br>
             </td>
+
         </tr>
         </tbody>
     </table>

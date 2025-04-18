@@ -56,4 +56,13 @@ public class Brand {
     public void setProductDetails(Set<ProductDetail> productDetails) {
         this.productDetails = productDetails;
     }
+
+    @Override
+    public String toString() {
+        return "Brand{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", productDetails=" + productDetails +
+                '}';
+    }
 }
