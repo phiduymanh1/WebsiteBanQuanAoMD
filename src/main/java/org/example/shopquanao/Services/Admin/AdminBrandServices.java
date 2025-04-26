@@ -17,6 +17,4 @@ public class AdminBrandServices {
     public List<Brand> getAllBrands() {
         return brandRepository.findAll();
     }
-
-    // cmt push
 }
