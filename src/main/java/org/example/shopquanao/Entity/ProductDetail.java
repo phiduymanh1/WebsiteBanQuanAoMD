@@ -53,8 +53,6 @@ public class ProductDetail {
     }
 
 
-    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItem> cartItems = new LinkedHashSet<>();
 
     public ProductDetail(Integer id, Product product, Color color, Size size, Brand brand, Integer stock, String imageUrl, Set<CartItem> cartItems) {
         this.id = id;
