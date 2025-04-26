@@ -11,7 +11,6 @@ import java.util.Set;
 
 
 @Entity
-@ToString
 @Table(name = "colors")
 public class Color {
     @Id
@@ -57,5 +56,14 @@ public class Color {
 
     public void setProductDetails(Set<ProductDetail> productDetails) {
         this.productDetails = productDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "Color{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", productDetails=" + productDetails +
+                '}';
     }
 }

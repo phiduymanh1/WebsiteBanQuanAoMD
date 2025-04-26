@@ -5,26 +5,309 @@
     <title>Add Order</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        .product-list {
+            max-height: 400px; /* Giới hạn chiều cao */
+            overflow-y: auto;  /* Cho phép cuộn */
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .product-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .product-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
+<div th:replace="Fragments/Admin/admin-header::adminHeader"></div>
 
 <div class="container mt-4">
     <div class="row">
-        <!-- Giỏ hàng (7 cột) -->
-        <div class="col-md-7">
-            gio hang ben nay
-            <br>
-            <button class="btn btn-primary btn-block mt-3">THANH TOÁN</button>
+        <div class="col-md-6">
+            <h4>Gio Hang</h4> <br> <br> <br>
+<!--            <form id="cartForm" method="post" th:action="@{/admin/order/thanhToan}">-->
+                <input type="hidden" id="orderIdHidden" th:value="${order.id}" />
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Stt</td>
+                            <td>Hinh Anh</td>
+                            <td>Ten San Pham</td>
+                            <td>Mau-Size</td>
+                            <td>So Luong</td>
+                            <td>Gia</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item,index : ${order.getOrderItems()}">
+                            <td th:text="${index.index + 1}"></td>
+                            <td >
+                                <img th:src="${item.productImage}" alt="Hình ảnh sản phẩm" width="50">
+                            </td>
+                            <td th:text="${item.productName}"></td>
+                            <td th:text="|Màu: ${item.color} - Size: ${item.size}|"></td>
+                            <td >
+                                <form class="update-quantity-form"  method="post">
+                                    <div class="quantity-selector">
+                                        <input type="hidden" name="productDetailId" th:value="${item.productDetailId}">
+                                        <input type="hidden" name="orderId" th:value="${item.orderId}">
+                                        <div class="quantity-selector">
+                                            <input type="number" name="quantity" class="quantity-input" th:value="${item.quantity}" min="1">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-confirm">Xác nhận</button>
+                                    </div>
+                                </form>
+                            </td>
+                            <td th:data-unit-price="${item.price}"
+                                th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+
+                            <td th:data-unit-price="${item.priceProduct}" style="display: none">
+                                <span th:text="${#numbers.formatDecimal(item.priceProduct * item.quantity, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                            </td>
+                            <td>
+                                <form th:action="@{/admin/order/removeItem}" method="post" style="display:inline;">
+                                    <input type="hidden" name="productDetailId" th:value="${item.productDetailId}">
+                                    <input type="hidden" name="orderId" th:value="${order.id}">
+                                    <button class="btn btn-danger btn-sm" type="submit">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tr>
+                        <td colspan="5"   class="text-end"><strong>Tổng cộng:</strong></td>
+<!--                        <td  id="totalCartPrice"><strong>0 đ</strong></td>-->
+                        <td id="totalCartPrice"><strong th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' đ'"></strong></td>
+                    </tr>
+                </table>
+
+                <br>
+                <a th:href="@{/admin/payment/showThanhToan/{id}(id=${id})}"><button type="submit"  class="btn btn-primary btn-block mt-3">THANH TOÁN</button></a>
+<!--            </form>-->
         </div>
 
-        <!-- Danh sách sản phẩm (5 cột) -->
-        <div class="col-md-5">
-            san pham ben nay
+        <div class="col-md-6">
+            <h4>Danh sách sản phẩm</h4> <br> <br> <br>
+            <div class="row">
+                <div class="col-6 mb-3" th:each="productDt: ${listProductPage}">
+                    <div class="product-item"
+                         th:data-id="${productDt.id}"
+                         th:data-name="${productDt.product.name}">
+                        <input name="productDtId" type="hidden" th:value="productDt.id">
+                        <img th:src="${productDt.getImageUrl()}" alt="Sản phẩm">
+                        <div class="product-info">
+                            <p class="product-name" th:text="${productDt.product.name}"></p>
+                            <p style="color: red" class="product-price" th:text="|Gia: ${productDt.product.price} đ|"></p>
+                            <p class="product-info text-primary"
+                               th:text="|Màu: ${productDt.color.name} - Size: ${productDt.size.name} - Brand: ${productDt.brand.name}|">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span th:each="i : ${#numbers.sequence(0,totalPage - 1)}">
+                <a th:href="@{/admin/order/banHang/{id}(id=${id}, pageNo=${i})}" th:text="${i+1}"></a>
+            </span>
 
 
         </div>
     </div>
 </div>
+<input type="hidden" id="selectedProductId">
+
+<div class="mt-auto" th:replace="Fragments/Admin/admin-footer::adminFooter"> </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".product-item").forEach(product => {
+            product.addEventListener("click", function () {
+                let productId = this.getAttribute("data-id");
+                let productName = this.getAttribute("data-name");
+                alert("Bạn đã chọn sản phẩm: " + productName + " (ID: " + productId + ")");
+                document.getElementById("selectedProductId").value = productId;
+
+                // Lấy orderId từ input ẩn
+                let orderId = document.getElementById("orderIdHidden").value;
+
+                // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+                let existingProductRow = document.querySelector(`tr[data-product-detail-id="${productId}"]`);
+
+                let newQuantity = 1;
+
+                if (existingProductRow) {
+                    let quantityInput = existingProductRow.querySelector(".quantity-input");
+                    let currentQuantity = parseInt(quantityInput.value);
+                    quantityInput.value = currentQuantity + 1;
+                    newQuantity = currentQuantity + 1;
+                }
+
+                // Gửi request đến backend
+                fetch('/api/order/selectSanPham', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        productDetailId: productId,
+                        orderId: orderId,
+                        quantity: newQuantity
+                    }),
+
+                })
+                    .then(data => {
+                        // Sau khi gửi request thành công, tải lại trang
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error("Có lỗi xảy ra:", error);
+                        alert("Đã có lỗi xảy ra: " + error.message);
+                    });
+            });
+        });
+
+        document.querySelectorAll(".update-quantity-form").forEach(form => {
+            let input = form.querySelector(".quantity-input");
+            let confirmBtn = form.querySelector(".btn-confirm");
+
+            input.addEventListener("input", function () {
+                if (this.value < 1) {
+                    this.value = 1;
+                }
+                updatePriceForInputChange(this)
+            });
+
+            confirmBtn.addEventListener("click", function (event) {
+                event.preventDefault();
+                let productDetailId = form.querySelector("input[name='productDetailId']").value;
+                let orderId = form.querySelector("input[name='orderId']").value;
+                let newQuantity = input.value;
+                alert("Cập nhật số lượng thành công, Số lượng ( Số lượng " + newQuantity + ")")
+                updateQuantity(productDetailId, newQuantity, confirmBtn, orderId);
+            });
+
+        });
+        function updatePriceForInputChange(inputElement) {
+            let row = inputElement.closest("tr");
+            let priceProductCell = row.querySelector("td[style='display: none']");
+
+            if (!priceProductCell) {
+                console.error("Lỗi: Không tìm thấy cột giá gốc!");
+                return;
+            }
+
+            let priceProductText = priceProductCell.getAttribute("data-unit-price");
+            if (!priceProductText) {
+                console.error("Lỗi: Không tìm thấy giá gốc trong data-unit-price!");
+                return;
+            }
+
+            let unitPrice = parseFloat(priceProductText.replace(/[^\d.-]/g, ''));
+
+            if (isNaN(unitPrice)) {
+                console.error("Lỗi: Giá sản phẩm không hợp lệ!", priceProductText);
+                return;
+            }
+
+            let newQuantity = parseInt(inputElement.value);
+            if (newQuantity < 1) {
+                inputElement.value = 1;
+                newQuantity = 1;
+            }
+
+
+            let totalPrice = unitPrice * newQuantity;
+
+            let priceCell = row.querySelector("td:nth-child(6)");
+            priceCell.textContent = totalPrice.toLocaleString('vi-VN') + " đ";
+
+
+            updateCartTotal();
+        }
+
+        function updateQuantity(productDetailId, newQuantity, buttonElement, orderId) {
+            fetch('/api/order/updateQuantity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productDetailId: productDetailId,
+                    orderId: orderId,
+                    quantity: newQuantity
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error("Lỗi API: " + JSON.stringify(errorData));
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Số lượng đã được cập nhật:", data);
+                    updateTotalPrice(buttonElement, newQuantity);
+                })
+                .catch(error => console.error("Lỗi khi cập nhật số lượng:", error));
+        }
+
+        function updateTotalPrice(buttonElement, newQuantity) {
+            let row = buttonElement.closest("tr");
+            let priceProductCell = row.querySelector("td[style='display: none']");
+
+            let unitPriceText = priceProductCell.getAttribute("data-unit-price");
+
+            if (!unitPriceText) {
+                console.error("Lỗi: Không tìm thấy giá sản phẩm!");
+                return;
+            }
+
+            let unitPrice = parseFloat(unitPriceText.replace(/[^\d.-]/g, ''));
+
+            let totalPrice = unitPrice * newQuantity;
+
+            priceProductCell.textContent = totalPrice.toLocaleString('vi-VN') + " đ";
+            console.log("Giá mới: ", totalPrice.toLocaleString('vi-VN'));
+
+            updateCartTotal();
+        }
+
+        function updateCartTotal() {
+            let total = 0;
+            document.querySelectorAll("td:nth-child(6)").forEach(cell => {
+                let price = cell.textContent.replace(/[^0-9]/g, '');
+                total += parseFloat(price) || 0;
+            });
+
+            let totalCartPriceElement = document.getElementById("totalCartPrice");
+            if (totalCartPriceElement) {
+                totalCartPriceElement.textContent = total.toLocaleString() + " đ";
+            }
+        }
+
+        updateCartTotal();
+    });
+</script>
 </html>

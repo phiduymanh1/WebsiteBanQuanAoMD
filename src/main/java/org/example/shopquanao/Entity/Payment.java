@@ -1,6 +1,7 @@
 package org.example.shopquanao.Entity;
 
 import jakarta.persistence.*;
+import org.example.shopquanao.Dto.AdminDto.PaymentCreateRequest;
 import org.example.shopquanao.Enum.PaymentMethod;
 import org.example.shopquanao.Enum.PaymentStatus;
 import org.hibernate.annotations.Nationalized;
@@ -85,4 +86,15 @@ public class Payment {
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
+
+    public static Payment fromCreateRequest(PaymentCreateRequest request, Order order){
+        Payment payment = new Payment();
+        payment.setOrder(order);
+        payment.setPaymentMethod(request.getPaymentMethod());
+        payment.setStatus(PaymentStatus.PENDING);
+        payment.setTransactionId(request.getTransactionId());
+        return payment;
+
+    }
+
 }

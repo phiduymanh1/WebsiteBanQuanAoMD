@@ -297,3 +297,12 @@ WHERE pd.product_id = 1;
 
 ALTER TABLE orders
 DROP CONSTRAINT DF__orders__created___534D60F1;
+
+-- xoa rang buoc null
+SELECT name
+FROM sys.foreign_keys
+WHERE parent_object_id = OBJECT_ID('orders') AND referenced_object_id = OBJECT_ID('users');
+
+ALTER TABLE orders DROP CONSTRAINT FK__orders__user_id__5441852A;
+
+ALTER TABLE orders ALTER COLUMN user_id INT NULL;

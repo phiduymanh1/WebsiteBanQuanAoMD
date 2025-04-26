@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Thanh Toán</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f3;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 25px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .payment-method {
+            margin-top: 10px;
+        }
+
+        .payment-option {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .qr-code, .bank-info {
+            text-align: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border: 1px dashed #ccc;
+        }
+
+        .qr-code img, .bank-info img {
+            max-width: 180px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        .bank-info p {
+            margin: 6px 0;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .bank-info strong input {
+            border: none;
+            background: transparent;
+            font-weight: bold;
+            color: #e74c3c;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div class="payment-container">
+    <h1>THANH TOÁN ĐƠN HÀNG</h1>
+
+    <!-- Thông tin đơn hàng -->
+    <div class="form-group">
+        <label for="order-id">Mã đơn hàng</label>
+        <input th:value="|ORDER_${orderHienTai.getId()}|" type="text" id="order-id" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Số tiền</label>
+        <input type="text" id="amount" th:value="${orderHienTai.getTotalPrice()}" readonly>
+    </div>
+
+    <!-- Chọn phương thức thanh toán -->
+    <div class="payment-method form-group">
+        <label for="payment-method">Phương thức thanh toán</label>
+        <select id="payment-method">
+            <option value="momo">Ví Momo</option>
+            <option value="vnpay">VNPay</option>
+            <option value="bank">Chuyển khoản ngân hàng</option>
+            <option value="cod">COD (Thanh toán khi nhận hàng)</option>
+        </select>
+    </div>
+
+    <!-- Nội dung tùy theo phương thức thanh toán -->
+    <div id="momo-method" class="payment-option">
+        <div class="qr-code">
+            <p>Quét QR code để thanh toán qua Momo</p>
+            <img src="/images/QRMomo.jpg" alt="Momo QR Code">
+            <p>Hoặc chuyển đến số điện thoại: <strong>0395346930</strong></p>
+        </div>
+    </div>
+
+    <div id="bank-method" class="payment-option" style="display: none;">
+        <label>Chọn ngân hàng:</label>
+        <div style="display: flex; gap: 10px; margin: 10px 0;">
+            <button type="button" class="bank-btn" data-bank="mb" style="flex: 1;">MB Bank</button>
+            <button type="button" class="bank-btn" data-bank="tech" style="flex: 1;">Techcombank</button>
+        </div>
+
+        <!-- MB Bank -->
+        <div class="bank-detail" id="mb-detail">
+            <div class="bank-info">
+                <p><strong>Ngân hàng MB Bank (Quân Đội)</strong></p>
+                <p>Số tài khoản: <strong>0395346930</strong></p>
+                <p>Chủ tài khoản: <strong>Phí Duy Mạnh</strong></p>
+                <p>Nội dung chuyển tiền:</p>
+                <div style="display: flex; justify-content: center;">
+                    <input type="text"
+                           th:value="|ORDER_${orderHienTai.getId()}|"
+                           disabled
+                           style="width: 60%; text-align: center; font-weight: bold; color: #e74c3c; border: 1px dashed #ccc; background-color: #fff; border-radius: 6px; padding: 8px;">
+                </div>
+                <img src="/images/QRMb.jpg" alt="MB Bank QR Code">
+            </div>
+        </div>
+
+        <!-- Techcombank -->
+        <div class="bank-detail" id="tech-detail" style="display: none;">
+            <div class="bank-info">
+                <p><strong>Ngân hàng Techcombank</strong></p>
+                <p>Số tài khoản: <strong>8218992005</strong></p>
+                <p>Chủ tài khoản: <strong>Phí Duy Mạnh</strong></p>
+                <p>Nội dung chuyển tiền:</p>
+                <div style="display: flex; justify-content: center;">
+                    <input type="text"
+                           th:value="|ORDER_${orderHienTai.getId()}|"
+                           disabled
+                           style="width: 60%; text-align: center; font-weight: bold; color: #e74c3c; border: 1px dashed #ccc; background-color: #fff; border-radius: 6px; padding: 8px;">
+                </div>
+                <img src="/images/QRTech.jpg" alt="Techcombank QR Code">
+            </div>
+        </div>
+    </div>
+
+    <button id="submit-payment">XÁC NHẬN THANH TOÁN</button>
+</div>
+
+<!-- JavaScript để chuyển đổi phương thức thanh toán -->
+<script>
+    document.getElementById('payment-method').addEventListener('change', function () {
+        const method = this.value;
+        document.querySelectorAll('.payment-option').forEach(div => {
+            div.style.display = 'none';
+        });
+        if (method === 'momo') {
+            document.getElementById('momo-method').style.display = 'block';
+        } else if (method === 'bank') {
+            document.getElementById('bank-method').style.display = 'block';
+        }
+    });
+
+    // Hiển thị mặc định momo
+    window.onload = () => {
+        document.getElementById('momo-method').style.display = 'block';
+    }
+    document.getElementById('payment-method').addEventListener('change', function () {
+        const method = this.value;
+        document.querySelectorAll('.payment-option').forEach(div => {
+            div.style.display = 'none';
+        });
+        if (method === 'momo') {
+            document.getElementById('momo-method').style.display = 'block';
+        } else if (method === 'bank') {
+            document.getElementById('bank-method').style.display = 'block';
+        }
+    });
+
+    // Xử lý chuyển đổi giữa MB Bank và Techcombank
+    const bankButtons = document.querySelectorAll('.bank-btn');
+    const bankDetails = document.querySelectorAll('.bank-detail');
+
+    bankButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const bank = this.dataset.bank;
+            bankDetails.forEach(detail => detail.style.display = 'none');
+            document.getElementById(`${bank}-detail`).style.display = 'block';
+        });
+    });
+</script>
+</body>
+</html>

@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "sizes")
+
 public class Size {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,5 +56,14 @@ public class Size {
 
     public void setProductDetails(Set<ProductDetail> productDetails) {
         this.productDetails = productDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "Size{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", productDetails=" + productDetails +
+                '}';
     }
 }

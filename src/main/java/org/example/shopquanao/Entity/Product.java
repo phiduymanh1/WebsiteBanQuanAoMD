@@ -127,4 +127,6 @@ public class Product {
     public void setProductDetails(Set<ProductDetail> productDetails) {
         this.productDetails = productDetails;
     }
+
+
 }

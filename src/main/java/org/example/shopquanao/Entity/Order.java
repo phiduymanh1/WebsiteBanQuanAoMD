@@ -1,7 +1,9 @@
 package org.example.shopquanao.Entity;
 
 import jakarta.persistence.*;
+import org.example.shopquanao.Dto.AdminDto.OrderCreateRequest;
 import org.example.shopquanao.Enum.OrderStatus;
+import org.example.shopquanao.Services.Admin.AdminOrderItemServices;
 import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -10,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -21,8 +24,8 @@ public class Order {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "user_id" , nullable = true)
     private User user;
 
     @Column(name = "total_price", nullable = false, precision = 10, scale = 2)
@@ -110,5 +113,26 @@ public class Order {
 
     public void setPayments(Set<Payment> payments) {
         this.payments = payments;
+    }
+
+    public static Order formOrderRequest(OrderCreateRequest request, User user,AdminOrderItemServices adminOrderItemServices){
+        Order order = new Order();
+        order.setUser(user);
+        order.setTotalPrice(request.getTotalPrice());
+        order.setStatus(OrderStatus.PENDING);
+        order.setCreatedAt(OffsetDateTime.now());
+
+        if (request.getOrderItem() != null && !request.getOrderItem().isEmpty()){
+            order.setOrderItems(request.getOrderItem().stream()
+                    .map(item -> adminOrderItemServices.createOrderItemRequest(item,order)).collect(Collectors.toSet()));
+        }
+
+        if (request.getPayment() != null && !request.getPayment().isEmpty()){
+            order.setPayments(request.getPayment().stream()
+                    .map(payment -> Payment.fromCreateRequest(payment,order)).collect(Collectors.toSet()));
+        }
+        return order;
+
+
     }
 }

@@ -1,0 +1,39 @@
+HTML:
+                                        <button type="button" class="btn btn-secondary btn-decrease" th:data-id="${item.id}">-</button>
+                                        <input type="text" name="quantityCash" class="quantity-input" th:value="${item.quantity}">
+                                        <button type="button" class="btn btn-secondary btn-increase" th:data-id="${item.id}">+</button>
+
+JS:
+
+ document.querySelectorAll(".btn-decrease").forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                let input = this.nextElementSibling;
+                let currentQuantity = parseInt(input.value);
+                if (currentQuantity > 1) {
+
+
+                    let newQuantity = currentQuantity - 1;
+                    input.value = newQuantity
+                    let row = this.closest("tr");
+                    let productDetailId = row.querySelector("input[name='productDetailId']").value;
+                    let orderId = row.querySelector("input[name='orderId']").value;
+                    updateQuantity(productDetailId, newQuantity, this,orderId);
+                }
+            });
+        });
+        document.querySelectorAll(".btn-increase").forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                let input = this.previousElementSibling;
+                let currentQuantity = parseInt(input.value);
+
+
+                let newQuantity = currentQuantity + 1;
+                input.value = newQuantity;
+
+                let row = this.closest("tr");
+                let productDetailId = row.querySelector("input[name='productDetailId']").value;
+                let orderId = row.querySelector("input[name='orderId']").value;
+
+                updateQuantity(productDetailId, newQuantity,this,orderId);
+            });
+        });
