@@ -92,7 +92,7 @@ CREATE TABLE order_items (
 CREATE TABLE cart_items (
                             id INT IDENTITY(1,1) PRIMARY KEY,
                             user_id INT NOT NULL,
-                            product_id INT NOT NULL,
+                            product_detail_id INT NOT NULL,
                             quantity INT NOT NULL CHECK (quantity > 0),
                             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                             FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
@@ -147,7 +147,7 @@ INSERT INTO product_detail (product_id, color_id, size_id, brand_id, stock, imag
                                                                                            (4, 1, 3, 1, 25, 'giay_the_thao_nike_l.jpg');  -- Giày Thể Thao Nike: Đen, L, Nike
 
 -- Thêm giỏ hàng
-INSERT INTO cart_items (user_id, product_id, quantity) VALUES
+INSERT INTO cart_items (user_id, product_detail_id, quantity) VALUES
                                                            (2, 1, 2),  -- Người dùng 2 chọn 2 áo phông trắng
                                                            (2, 3, 1),  -- Người dùng 2 chọn 1 quần jeans nam
                                                            (3, 2, 1);  -- Người dùng 3 chọn 1 áo khoác jeans

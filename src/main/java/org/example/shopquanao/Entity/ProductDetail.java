@@ -7,6 +7,9 @@ import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "product_detail")
@@ -42,6 +45,9 @@ public class ProductDetail {
     @Nationalized
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CartItem> cartItems = new LinkedHashSet<>();
 
     public ProductDetail() {
     }
