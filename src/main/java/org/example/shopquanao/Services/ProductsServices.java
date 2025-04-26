@@ -22,5 +22,13 @@ public class ProductsServices {
         return SanPhamRepository.findById(id).get();
     }
 
+    public void addProduct(Product product) {
+        SanPhamRepository.save(product);
+    }
+
+    public void removeProduct(Product product) {
+        SanPhamRepository.delete(product);
+    }
+
 
 }

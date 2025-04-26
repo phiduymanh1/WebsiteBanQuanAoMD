@@ -4,6 +4,7 @@ import org.example.shopquanao.Dto.AdminDto.ViewOrdersAdminDTO;
 import org.example.shopquanao.Enum.OrderStatus;
 import org.example.shopquanao.Services.Admin.AdminOrderServices;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,6 @@ public class OrderControllerAdmin {
         List<OrderStatus> listStt = Arrays.asList(OrderStatus.values());
         model.addAttribute("listStt", listStt);
         viewOrdersAdminDTO.getOrderItems().forEach(System.out::println);
-
         return "View/Order/Admin/DetailOrder";
     }
 }

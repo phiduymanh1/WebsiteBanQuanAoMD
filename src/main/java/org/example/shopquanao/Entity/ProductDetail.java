@@ -7,6 +7,9 @@ import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "product_detail")
@@ -46,7 +49,11 @@ public class ProductDetail {
     public ProductDetail() {
     }
 
-    public ProductDetail(Integer id, Product product, Color color, Size size, Brand brand, Integer stock, String imageUrl) {
+
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CartItem> cartItems = new LinkedHashSet<>();
+
+    public ProductDetail(Integer id, Product product, Color color, Size size, Brand brand, Integer stock, String imageUrl, Set<CartItem> cartItems) {
         this.id = id;
         this.product = product;
         this.color = color;
@@ -54,6 +61,16 @@ public class ProductDetail {
         this.brand = brand;
         this.stock = stock;
         this.imageUrl = imageUrl;
+        this.cartItems = cartItems;
+    }
+
+
+    public Set<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(Set<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     public Integer getId() {

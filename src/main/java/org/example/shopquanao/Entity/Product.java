@@ -42,24 +42,19 @@ public class Product {
     private String imageUrl;
 
 
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItem> cartItems = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductDetail>productDetails = new LinkedHashSet<>();
 
     public Product() {
     }
 
-    public Product(Integer id, String name, String description, BigDecimal price, Category category, String imageUrl, Set<CartItem> cartItems, Set<ProductDetail> productDetails) {
+    public Product(Integer id, String name, String description, BigDecimal price, Category category, String imageUrl, Set<ProductDetail> productDetails) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
         this.imageUrl = imageUrl;
-        this.cartItems = cartItems;
         this.productDetails = productDetails;
     }
 
@@ -111,14 +106,6 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-
-    public Set<CartItem> getCartItems() {
-        return cartItems;
-    }
-
-    public void setCartItems(Set<CartItem> cartItems) {
-        this.cartItems = cartItems;
-    }
 
     public Set<ProductDetail> getProductDetails() {
         return productDetails;

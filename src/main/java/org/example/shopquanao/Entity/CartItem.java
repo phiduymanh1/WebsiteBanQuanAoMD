@@ -22,8 +22,8 @@ public class CartItem {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "product_detail_id", nullable = false)
+    private ProductDetail productDetail;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -31,10 +31,10 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(Integer id, User user, Product product, Integer quantity) {
+    public CartItem(Integer id, User user, ProductDetail productDetail, Integer quantity) {
         this.id = id;
         this.user = user;
-        this.product = product;
+        this.productDetail = productDetail;
         this.quantity = quantity;
     }
 
@@ -54,12 +54,12 @@ public class CartItem {
         this.user = user;
     }
 
-    public Product getProduct() {
-        return product;
+    public ProductDetail getProductDetail() {
+        return productDetail;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductDetail(ProductDetail productDetail) {
+        this.productDetail = productDetail;
     }
 
     public Integer getQuantity() {
