@@ -270,7 +270,12 @@ group by sp.id, s.name, c.name, sp.name, sp.description
 ALTER TABLE colors
 DROP CONSTRAINT UQ__colors__72E12F1B8272DFCD;
 
+select * from product_detail pd
+join colors c on c.id = pd.color_id
+join sizes s on s.id = pd.size_id
+where pd.product_id =1 and s.id = 2 and c.id = 1
 
+select * from cart_items where user_id =1
 
 SELECT 
     p.id AS product_id, 

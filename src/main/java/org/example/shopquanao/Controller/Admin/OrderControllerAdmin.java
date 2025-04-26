@@ -5,6 +5,7 @@ import org.example.shopquanao.Entity.ProductDetail;
 import org.example.shopquanao.Enum.OrderStatus;
 import org.example.shopquanao.Services.Admin.*;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +64,6 @@ public class OrderControllerAdmin {
         model.addAttribute("listSize", adminSizeServices.getAllSizes() );
         model.addAttribute("listBrand", adminBrandServices.getAllBrands() );
         viewOrdersAdminDTO.getOrderItems().forEach(System.out::println);
-
         return "View/Order/Admin/DetailOrder";
     }
 
