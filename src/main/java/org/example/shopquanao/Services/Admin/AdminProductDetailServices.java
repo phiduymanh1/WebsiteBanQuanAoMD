@@ -18,14 +18,27 @@ public class AdminProductDetailServices {
         this.productDetailRepository = productDetailRepository;
     }
 
+    public List<ProductDetail> findAll() {
+        return productDetailRepository.findAll();
+    }
+
     public List<ProductDetail> getAllProductDetails() {
         return productDetailRepository.findAll();
+    }
+    public ProductDetail findById(int id) {
+        return productDetailRepository.findById(id).get();
     }
 
     public Page<ProductDetail> getAllProductDetailsPage(int pageNo, int pageSize,String sortField) {
         Sort sort =  Sort.by(sortField).descending() ;
         Pageable pageable = PageRequest.of(pageNo,pageSize,sort);
         return productDetailRepository.findAll(pageable);
+    }
+    public void save(ProductDetail productDetail) {
+        productDetailRepository.save(productDetail);
+    }
 
+    public void delete(int id) {
+        productDetailRepository.deleteById(id);
     }
 }

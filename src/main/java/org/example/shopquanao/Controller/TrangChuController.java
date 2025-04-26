@@ -9,12 +9,12 @@ public class TrangChuController {
 
     @GetMapping("/trang-chu")
     public String home(){
-        return "/View/Home/TrangChu.html";
+        return "View/Home/TrangChu";
     }
 
     @GetMapping("/sanPham")
     public String sanPham(){
-        return "/View/Home/SanPham.html";
+        return "View/SanPham/SanPham";
     }
 
 }

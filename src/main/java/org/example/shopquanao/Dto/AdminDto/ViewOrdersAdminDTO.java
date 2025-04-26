@@ -44,8 +44,4 @@ public class ViewOrdersAdminDTO {
         }
         return dto;
     }
-
-
-
-
 }

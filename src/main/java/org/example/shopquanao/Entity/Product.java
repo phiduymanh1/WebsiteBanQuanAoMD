@@ -49,8 +49,4 @@ public class Product {
     private Set<ProductDetail> productDetails = new LinkedHashSet<>();
 
 
-
-
-
-
 }
