@@ -6,10 +6,15 @@
     <link rel="icon" href="/images/quanjeans.jpg" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 </head>
 <style>
 
 </style>
+<script th:if="${message != null}">
+    alert('[[${message}]]');
+</script>
+
 <body class="d-flex flex-column min-vh-100">
 
 <!-- Header -->
@@ -39,24 +44,41 @@
                    class="fw-bold text-danger"
                 >
                 </p>
-                <input type="hidden" th:value="${brand.id}" id="branId" th:name="idBrand">
-                Thương hiệu: <span th:text="${brand.name}"></span> <br>
-                <!--                <p th:text="${productDetail[0].color.name}"></p>-->
-                Màu:
-                <div th:each="c : ${colors}">
-                    <input type="radio" th:id="'color' + ${c.id}" th:value="${c.id}" class="check-form-input"
-                           th:name="colors">
-                    <label th:for="'color' + ${c.id}" th:text="${c.name}"></label>
+<!--                <input type="hidden" th:value="${brand.id}" id="branId" th:name="idBrand">-->
+<!--                Thương hiệu: <span th:text="${brand.name}"></span> <br>-->
+                Thương Hiệu:
+                <div class="d-flex flex-wrap gap-2">
+                    <div th:each="b, start : ${brands}" class="btn-group" role="group">
+                        <input type="radio" class="btn-check" th:id="'brand' + ${b.id}" th:value="${b.id}" th:name="brands"
+                               th:checked="${start.index==0}"
+                               autocomplete="off">
+                        <label class="btn btn-outline-primary" th:for="'brand' + ${b.id}" th:text="${b.name}"></label>
+                    </div>
                 </div>
                 <br>
 
-                Size:
-                <div th:each="s : ${size}">
-                    <input type="radio" th:id="'size' + ${s.id}" th:value="${s.id}" class="check-form-input"
-                           th:name="size">
-                    <label th:for="'size' + ${s.id}" th:text="${s.name}"></label>
+
+                <!--                <p th:text="${productDetail[0].color.name}"></p>-->
+                <!-- Màu -->
+                Màu:
+                <div class="d-flex flex-wrap gap-2">
+                    <div th:each="c : ${colors}" class="btn-group" role="group">
+                        <input type="radio" th:id="'color' + ${c.id}" th:value="${c.id}" class="btn-check" th:name="colors" autocomplete="off">
+                        <label th:for="'color' + ${c.id}" th:text="${c.name}" class="btn btn-outline-primary"></label>
+                    </div>
                 </div>
                 <br>
+
+                <!-- Size -->
+                Size:
+                <div class="d-flex flex-wrap gap-2">
+                    <div th:each="s : ${sizes}" class="btn-group" role="group">
+                        <input type="radio" th:id="'size' + ${s.id}" th:value="${s.id}" class="btn-check" th:name="size" autocomplete="off">
+                        <label th:for="'size' + ${s.id}" th:text="${s.name}" class="btn btn-outline-primary"></label>
+                    </div>
+                </div>
+                <br>
+
 
                 Số lượng mua:
                 <div class="input-group w-50" style="max-width: 150px">
@@ -87,7 +109,9 @@
 </main>
 <div th:replace="Fragments/Users/footer :: footer"></div>
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+
 
 <script>
     // Hàm cập nhật số lượng tồn kho
@@ -95,11 +119,12 @@
         const stockDisplay = document.getElementById("stockQuantity");
         const selectedColor = document.querySelector("input[name='colors']:checked");
         const selectedSize = document.querySelector("input[name='size']:checked");
+        const selectedBrand = document.querySelector("input[name='brands']:checked");
         if (selectedColor && selectedSize) {
             const productId = document.querySelector("input[name = 'productId']").value; /* lấy product_id từ server (hoặc model Spring Boot) */
             const colorId = selectedColor.value;
             const sizeId = selectedSize.value;
-            const brandId = document.getElementById("branId").value;
+            const brandId = selectedBrand.value;
 
             // Gửi AJAX để lấy số lượng tồn kho từ API
             fetch(`/sanPham/api/getStock?productId=${productId}&colorId=${colorId}&sizeId=${sizeId}&brandId=${brandId}`)
@@ -126,7 +151,7 @@
     }
 
     // Lắng nghe sự kiện thay đổi của các radio button
-    document.querySelectorAll("input[name='colors'], input[name='size']").forEach(input => {
+    document.querySelectorAll("input[name='colors'], input[name='size'], input[name='brands']").forEach(input => {
         input.addEventListener("change", updateStock);
     });
 

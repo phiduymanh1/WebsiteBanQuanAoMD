@@ -5,12 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.example.shopquanao.Entity.CartItem;
 import org.example.shopquanao.Entity.Order;
+import org.example.shopquanao.Entity.ProductDetail;
+import org.example.shopquanao.Repository.ProductDetailRepo;
 import org.example.shopquanao.Services.CartServices;
 import org.example.shopquanao.Services.OrderItemsService;
 import org.example.shopquanao.Services.OrderService;
+import org.example.shopquanao.Services.ProductDetailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -26,6 +30,7 @@ public class CartController {
     private final CartServices cartServices;
     private final OrderService orderService;
     private final OrderItemsService orderItemsService;
+    private final ProductDetailService productDetailService;
 
 
     @GetMapping("/load")
@@ -56,14 +61,26 @@ public class CartController {
 
     // Method để cập nhật số lượng sản phẩm trong giỏ hàng
     @PostMapping("/updateQuantity")
-    public String updateQuantity(@RequestParam("productDetailId") Integer productDetailId, @RequestParam("quantity") int quantity) {
-        cartServices.updateQuantity(productDetailId, quantity);  // Gọi service để cập nhật số lượng
+    public String updateQuantity(@RequestParam("productDetailId") Integer productDetailId,
+                                 @RequestParam("quantity") int quantity,
+                                 RedirectAttributes redirectAttributes
+                                 ) {
+
+        int productDetailQuantityTotal = productDetailService.getProductDetail(productDetailId).getStock();
+        if(quantity > productDetailQuantityTotal) {
+            quantity = productDetailQuantityTotal;
+            redirectAttributes.addFlashAttribute("message", "tổng số lượng sản phẩm trong kho còn lại là " + productDetailQuantityTotal + " sản phẩm");
+            cartServices.updateQuantity(productDetailId, quantity);
+        }
+        else {
+            cartServices.updateQuantity(productDetailId, quantity);  // Gọi service để cập nhật số lượng
+        }
         return "redirect:/cart/load";  // Quay lại trang giỏ hàng sau khi cập nhật
     }
 
     // Phương thức xử lý thanh toán
     @PostMapping("/checkout")
-    public String checkout(@RequestParam("selectedCartIds") List<Integer> cartIds, Model model) {
+    public String checkout(@RequestParam("selectedCartIds") List<Integer> cartIds, Model model, RedirectAttributes redirectAttributes) {
         // 1. Kiểm tra danh sách ID
         if (cartIds == null || cartIds.isEmpty()) {
             model.addAttribute("error", "Không có sản phẩm nào được chọn để thanh toán!");
@@ -72,6 +89,26 @@ public class CartController {
 
         // 2. Lấy danh sách cart item từ database
         List<CartItem> cartItems = cartServices.getCartItemsByIds(cartIds);
+
+
+        for(CartItem cartItem: cartItems) {
+            ProductDetail productDetail = cartItem.getProductDetail();
+
+            int productDetailId = cartItem.getProductDetail().getId();
+            int quantityInCart = cartItem.getQuantity();
+
+            int quantityTotal = productDetailService.getProductDetail(productDetailId).getStock();
+
+            if(quantityInCart > quantityTotal) {
+                redirectAttributes.addFlashAttribute("message", "Sản phẩm: " + productDetail.getProduct().getName() + " |" +
+                        " brand: " + productDetail.getBrand().getName() + " |" +
+                        " color: " + productDetail.getColor().getName() + " |" +
+                        " size: " + productDetail.getSize().getName() +
+                        " trong giỏ hàng không đủ số lượng. Tồn kho hiện tại là " + quantityTotal);
+                return "redirect:/cart/load";
+            }
+        }
+
         if (cartItems.isEmpty()) {
             model.addAttribute("error", "Không tìm thấy sản phẩm trong giỏ hàng!");
             return "/View/Cart/cart";

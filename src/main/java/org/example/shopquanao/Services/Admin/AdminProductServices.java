@@ -2,6 +2,8 @@ package org.example.shopquanao.Services.Admin;
 
 import org.example.shopquanao.Entity.Product;
 import org.example.shopquanao.Repository.ProductsRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +15,15 @@ public class AdminProductServices {
         this.productsRepository = productsRepository;
     }
 
-    public List<Product> getAllProducts() {
+    public List<Product> findAll() {
         return productsRepository.findAll();
     }
+
+    public Page<Product> getAllProductPage(Pageable pageable) {
+        return productsRepository.findAll(pageable);
+    }
+
+
     public Product getProductById(int id) {
         return productsRepository.findById(id).get();
     }

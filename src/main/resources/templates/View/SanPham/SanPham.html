@@ -50,34 +50,52 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <div class="col" th:each="product : ${products}">
             <div class="card h-100">
-                <a th:href="@{/sanPham/detail/{id}/{brandId} (id = ${product.id}, brandId=${product.productDetails[0] !=null ? product.productDetails[0].brand.id : ''})}">
+<!--                <a th:href="@{/sanPham/detail/{id}/{brandId} (id=${product.id}, brandId=${(product.productDetails != null and #lists.size(product.productDetails) > 0 and product.productDetails[0].brand != null) ? product.productDetails[0].brand.id : ''})}">-->
+                <a th:href="@{/sanPham/detail/{id} (id=${product.id})}"></a>
+
+                <a th:href="@{/sanPham/detail/{id} (id = ${product.id})}">
                     <img th:src="@{/images/{image} (image =${product.imageUrl})}" class="card-img-top" style="width: 100%; height: 300px" alt="Ảnh sản phẩm">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title" th:text="${product.name}">Tên sản phẩm</h5>
                     <p class="card-text text-muted" th:text="'Giá: ' + ${product.price} + ' VND'">Giá sản phẩm</p>
                     <p class="card-text text-muted" th:text="'Mô tả: ' + ${product.description}">Mô tả</p>
-                    <a class="btn btn-primary" th:href="@{/sanPham/detail/{id}/{brandId} (id = ${product.id}, brandId=${product.productDetails[0] !=null ? product.productDetails[0].brand.id : ''})}">Xem chi tiết</a>
+<!--                    <a class="btn btn-primary" th:href="@{/sanPham/detail/{id}/{brandId} (id = ${product.id})}">Xem chi tiết</a>-->
+                    <a class="btn btn-primary" th:href="@{/sanPham/detail/{id}(id=${product.id})}">Xem chi tiết</a>
+<!--                    <a class="btn btn-primary"-->
+<!--                       th:if="${product.productDetails != null and #lists.size(product.productDetails) > 0 and product.productDetails[0].brand != null}"-->
+<!--                       th:href="@{/sanPham/detail/{id}/{brandId}(id=${product.id}, brandId=${product.productDetails[0].brand.id})}">-->
+<!--                        Xem chi tiết-->
+<!--                    </a>-->
                 </div>
             </div>
         </div>
     </div>
 
-<!--    &lt;!&ndash; Phân trang &ndash;&gt;-->
-<!--    <nav aria-label="Page navigation" class="mt-4">-->
-<!--        <ul class="pagination justify-content-center">-->
-<!--            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">-->
-<!--                <a class="page-link" th:href="@{/products(page=${currentPage - 1})}">Trước</a>-->
-<!--            </li>-->
-<!--            <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}"-->
-<!--                th:classappend="${pageNum == currentPage} ? 'active'">-->
-<!--                <a class="page-link" th:href="@{/products(page=${pageNum})}" th:text="${pageNum}"></a>-->
-<!--            </li>-->
-<!--            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">-->
-<!--                <a class="page-link" th:href="@{/products(page=${currentPage + 1})}">Sau</a>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </nav>-->
+    <!-- PHÂN TRANG -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- Previous button -->
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/sanPham/hienThi(page=${currentPage - 1})}" tabindex="-1">Trang trước</a>
+            </li>
+
+            <!-- Loop các trang -->
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link" th:href="@{/sanPham/hienThi(page=${i})}" th:text="${i + 1}"></a>
+            </li>
+
+            <!-- Next button -->
+            <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{/sanPham/hienThi(page=${currentPage + 1})}">Trang sau</a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+
 </main>
 
 

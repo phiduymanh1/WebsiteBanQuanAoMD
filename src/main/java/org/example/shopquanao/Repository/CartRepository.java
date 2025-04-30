@@ -43,4 +43,7 @@ public interface CartRepository extends JpaRepository<CartItem, Integer> {
     @Query(value = "SELECT * FROM cart_items cart WHERE cart.id IN :ids", nativeQuery = true)
     List<CartItem> findAllByIds(@Param("ids") List<Integer> ids);
 
+
+
+
 }

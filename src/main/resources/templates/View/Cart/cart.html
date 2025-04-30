@@ -10,6 +10,10 @@
 <style>
 
 </style>
+<div th:if="${message != null}" class="alert alert-danger">
+    <span th:text="${message}"></span>
+</div>
+
 <body class="d-flex flex-column min-vh-100">
 <div th:replace="Fragments/Users/header :: header"></div>
 <div th:replace="Fragments/Users/navbar :: navbar"></div>

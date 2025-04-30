@@ -298,6 +298,30 @@ JOIN colors c ON pd.color_id = c.id
 WHERE pd.product_id = 1;
 
 
+select * from colors
+select * from sizes
+
+select *  from product_detail
+select c.id as 'id cart', pd.id, c.quantity from cart_items c
+join users u  on u.id = c.user_id
+join product_detail pd on pd.id = c.product_detail_id
+where u.id = 1
+
+select c.id as 'id cart', b.name, cl.name, s.name, c.quantity from cart_items c
+join users u  on u.id = c.user_id
+join product_detail pd on pd.id = c.product_detail_id
+join brands b on b.id = pd.brand_id
+join colors cl on cl.id = pd.color_id
+join sizes s on s.id = pd.size_id
+where u.id = 1
+select * from cart_items c
+join users u on u.id = c.user_id
+
+
+update product_detail set stock =12 where id =4
+
+
+
 
 
 ALTER TABLE orders
