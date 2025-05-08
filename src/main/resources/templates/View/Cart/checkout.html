@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác nhận thanh toán</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Xác nhận thanh toán</h1>
+    <!--    <div th:if="${cartItems != null and !cartItems.isEmpty()}">-->
+    <div>
+        <h4>Danh sách sản phẩm:</h4>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Hình ảnh</th>
+                <th>Brand</th>
+                <th>Màu</th>
+                <th>Size</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cart : ${cartItems}">
+                <td th:text="${cart.productDetail?.product?.name} ?: 'N/A'"></td>
+                <td>
+                    <img th:src="@{/images/{image} (image=${cart.productDetail?.imageUrl ?: 'default.jpg'})}"
+                         style="width: 40px; height: 40px" alt="anh san pham">
+                </td>
+                <td th:text="${cart.productDetail?.brand?.name} ?: 'N/A'"></td>
+                <td th:text="${cart.productDetail?.color?.name} ?: 'N/A'"></td>
+                <td th:text="${cart.productDetail?.size?.name} ?: 'N/A'"></td>
+                <td th:text="${cart.quantity}"></td>
+                <td th:text="${#numbers.formatDecimal(cart.productDetail?.product?.price*cart.quantity, 0 , 'COMMA', 0, 'POINT') + ' VNĐ'}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <h4>Tổng tiền: <span
+                th:text="${totalPrice != null ? #numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : 'N/A'}"
+                class="text-danger"></span></h4>
+        <a href="/cart/load" class="btn btn-primary">Quay lại giỏ hàng</a> <br>
+
+        <form action="/cart/thanhToan" method="post">
+            <th:block th:each="cart : ${cartItems}">
+                <input type="hidden" th:value="${cart.id}" name="idCartItems">
+                <input type="hidden" th:value="${cart.productDetail?.id}" name="idProductDetail">
+                <input type="hidden" th:value="${cart.quantity}" name="quantity">
+                <input type="hidden" th:value="${cart.productDetail?.product.price*cart.quantity}" name="price"> <!--giá của 1 loại productDetail-->
+            </th:block>
+            <input type="hidden" th:value="${totalPrice}" name="totalPrice"> <!--Tổng giá của đơn hàng đặt-->
+            <button type="submit" class="btn btn-success">Thanh toán</button>
+        </form>
+    </div>
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+</div>
+</body>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+        let total = 0;
+        document.querySelectorAll("tbody tr").forEach(row => {
+        let price = parseFloat(row.children[6].innerText.replace(/\D/g, "")) || 0;
+        let quantity = parseInt(row.children[5].innerText) || 1;
+        total += price * quantity;
+    });
+        document.querySelector("#totalPrice").innerText = total.toLocaleString() + " VNĐ";
+    });
+</script>
+</html>

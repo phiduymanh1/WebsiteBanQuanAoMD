@@ -16,7 +16,6 @@ CREATE TABLE users (
                        image_url NVARCHAR(255) -- Ảnh đại diện
 );
 
--- Bảng danh mục sản phẩm
 CREATE TABLE categories (
                             id INT IDENTITY(1,1) PRIMARY KEY,
                             name NVARCHAR(100) UNIQUE NOT NULL,
@@ -92,10 +91,10 @@ CREATE TABLE order_items (
 CREATE TABLE cart_items (
                             id INT IDENTITY(1,1) PRIMARY KEY,
                             user_id INT NOT NULL,
-                            product_id INT NOT NULL,
+                            product_detail_id INT NOT NULL,
                             quantity INT NOT NULL CHECK (quantity > 0),
                             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                            FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+                            FOREIGN KEY (product_detail_id) REFERENCES product_detail(id) ON DELETE CASCADE
 );
 
 -- Bảng thanh toán
@@ -160,7 +159,8 @@ VALUES
     (N'Quần jeans nam', N'Quần jeans nam ống đứng', 600000, 2, N'quanjeans.jpg'),
     (N'Váy maxi nữ', N'Váy maxi phù hợp cho đi biển', 500000, 3, N'vaymaxi.jpg'),
     (N'Giày sneaker', N'Giày thể thao năng động', 800000, 4, N'sneaker.jpg'),
-    (N'Nón bucket', N'Nón bucket chống nắng', 250000, 5, N'nonbucket.jpg');
+    (N'Nón bucket', N'Nón bucket chống nắng', 250000, 5, N'nonbucket.jpg'),
+	(N'Giày nam', N'Giày nam phong cách', 250000, 5, N'https://cdn.pixabay.com/photo/2023/05/29/13/10/shoes-8026038_1280.jpg');
 
 -- Bảng product_detail
 -- Bảng product_detail: Mỗi sản phẩm có 2 màu và 2 size
@@ -238,13 +238,13 @@ VALUES
 
 
 -- Bảng cart_items
-INSERT INTO cart_items (user_id, product_id, quantity)
+INSERT INTO cart_items (user_id, product_detail_id, quantity)
 VALUES 
     (1, 1, 1),
-    (2, 2, 1),
-    (3, 3, 1),
-    (4, 4, 1),
-    (5, 5, 1);
+    (2, 5, 1),
+    (3, 10, 1),
+    (4, 15, 1),
+    (5, 20, 1);
 
 -- Bảng payments
 INSERT INTO payments (order_id, payment_method, status, transaction_id)
@@ -270,7 +270,12 @@ group by sp.id, s.name, c.name, sp.name, sp.description
 ALTER TABLE colors
 DROP CONSTRAINT UQ__colors__72E12F1B8272DFCD;
 
+select * from product_detail pd
+join colors c on c.id = pd.color_id
+join sizes s on s.id = pd.size_id
+where pd.product_id =1 and s.id = 2 and c.id = 1
 
+select * from cart_items where user_id =1
 
 SELECT 
     p.id AS product_id, 
@@ -293,10 +298,35 @@ JOIN colors c ON pd.color_id = c.id
 WHERE pd.product_id = 1;
 
 
+select * from colors
+select * from sizes
+
+select *  from product_detail
+select c.id as 'id cart', pd.id, c.quantity from cart_items c
+join users u  on u.id = c.user_id
+join product_detail pd on pd.id = c.product_detail_id
+where u.id = 1
+
+select c.id as 'id cart', b.name, cl.name, s.name, c.quantity from cart_items c
+join users u  on u.id = c.user_id
+join product_detail pd on pd.id = c.product_detail_id
+join brands b on b.id = pd.brand_id
+join colors cl on cl.id = pd.color_id
+join sizes s on s.id = pd.size_id
+where u.id = 1
+select * from cart_items c
+join users u on u.id = c.user_id
+
+
+update product_detail set stock =12 where id =4
+
+
+
 
 
 ALTER TABLE orders
 DROP CONSTRAINT DF__orders__created___534D60F1;
+
 
 -- xoa rang buoc null
 SELECT name
@@ -306,3 +336,4 @@ WHERE parent_object_id = OBJECT_ID('orders') AND referenced_object_id = OBJECT_I
 ALTER TABLE orders DROP CONSTRAINT FK__orders__user_id__5441852A;
 
 ALTER TABLE orders ALTER COLUMN user_id INT NULL;
+

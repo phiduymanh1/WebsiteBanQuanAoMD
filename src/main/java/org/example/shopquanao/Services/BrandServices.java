@@ -21,4 +21,8 @@ public class BrandServices {
     public Brand findById(int id) {
         return brandRepository.findById(id).get();
     }
+
+    public List<Brand> distinctBrand(int idProduct) {
+        return brandRepository.findByProductId(idProduct);
+    }
 }

@@ -6,25 +6,34 @@
     <link rel="icon" href="/images/quanjeans.jpg" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 </head>
+<style>
+
+</style>
+<script th:if="${message != null}">
+    alert('[[${message}]]');
+</script>
+
 <body class="d-flex flex-column min-vh-100">
 
 <!-- Header -->
-<div th:replace="Fragments/header :: header"></div>
+<div th:replace="Fragments/Users/header :: header"></div>
 
 <!-- Navbar -->
-<div th:replace="Fragments/navbar :: navbar"></div>
+<div th:replace="Fragments/Users/navbar :: navbar"></div>
 
 <main class="container flex-grow-1 mt-6">
-    <form action="" method="post">
+    <form action="/sanPham/addToCart" method="post" id="form">
         <div class="row align-items-center">
             <!-- Cột ảnh sản phẩm (bên trái) -->
             <div class="col-md-6 text-center">
                 <img th:src="@{/images/{image} (image=${sanPham.imageUrl})}"
                      alt="Ảnh sản phẩm"
                      class="img-fluid rounded"
-                     style="max-width: 400px; height: 400px;">
+                     style="max-width: 600px; height: 600px;">
             </div>
+            <input type="hidden" th:value="${sanPham.id}" th:name="productId">
 
             <!-- Cột thông tin sản phẩm (bên phải) -->
             <div class="col-md-6">
@@ -32,54 +41,185 @@
                 <p th:text="${sanPham.description}" class="text-muted"></p>
                 <!-- Giá gốc -->
                 <p th:text="'Giá: ' + ${#numbers.formatInteger(sanPham.price, 3, 'COMMA')} + ' VND'"
-                   class="fw-bold text-danger">
+                   class="fw-bold text-danger"
+                >
                 </p>
-                Thương hiệu: <span th:text="${brand.name}"></span> <br>
-<!--                <p th:text="${productDetail[0].color.name}"></p>-->
+<!--                <input type="hidden" th:value="${brand.id}" id="branId" th:name="idBrand">-->
+<!--                Thương hiệu: <span th:text="${brand.name}"></span> <br>-->
+                Thương Hiệu:
+                <div class="d-flex flex-wrap gap-2">
+                    <div th:each="b, start : ${brands}" class="btn-group" role="group">
+                        <input type="radio" class="btn-check" th:id="'brand' + ${b.id}" th:value="${b.id}" th:name="brands"
+                               th:checked="${start.index==0}"
+                               autocomplete="off">
+                        <label class="btn btn-outline-primary" th:for="'brand' + ${b.id}" th:text="${b.name}"></label>
+                    </div>
+                </div>
+                <br>
+
+
+                <!--                <p th:text="${productDetail[0].color.name}"></p>-->
+                <!-- Màu -->
                 Màu:
-                <span th:each="c : ${colors}">
-                    <input type="radio" th:id="'color' + ${c.id}" th:value="${c.id}" class="check-form-input" name="colors">
-                    <label th:for="'color' + ${c.id}" th:text="${c.name}"></label>
-                </span> <br>
+                <div class="d-flex flex-wrap gap-2">
+                    <div th:each="c : ${colors}" class="btn-group" role="group">
+                        <input type="radio" th:id="'color' + ${c.id}" th:value="${c.id}" class="btn-check" th:name="colors" autocomplete="off">
+                        <label th:for="'color' + ${c.id}" th:text="${c.name}" class="btn btn-outline-primary"></label>
+                    </div>
+                </div>
+                <br>
 
+                <!-- Size -->
                 Size:
-                <span th:each="s : ${size}">
-                    <input type="radio" th:id="'size' + ${s.id}" th:value="${s.id}" class="check-form-input" name="size">
-                    <label th:for="'size' + ${s.id}" th:text="${s.name}"></label>
-                </span>
+                <div class="d-flex flex-wrap gap-2">
+                    <div th:each="s : ${sizes}" class="btn-group" role="group">
+                        <input type="radio" th:id="'size' + ${s.id}" th:value="${s.id}" class="btn-check" th:name="size" autocomplete="off">
+                        <label th:for="'size' + ${s.id}" th:text="${s.name}" class="btn btn-outline-primary"></label>
+                    </div>
+                </div>
+                <br>
 
-                Số Lượng:
-                <button>-</button>
-                <input type="number" th:value="${sanPham.productDetails[0].stock}" id="stockInput">
-                <button>+</button>
 
-                <input type="hidden" name="selectedColor" id="selectedColor">
+                Số lượng mua:
+                <div class="input-group w-50" style="max-width: 150px">
+                    <button type="button" id="decrease" class="btn btn-outline-secondary rounded-3 px-3">-</button>
+                    <input type="number" id="quantityInput" class="form-control text-center fs-10 rounded-3" value="1"
+                           min="1" th:name="soLuongMua">
+                    <button type="button" id="increase" class="btn btn-outline-secondary rounded-3 px-3">+</button>
+                </div>
+
+                <p id="stockError" class="text-danger mt-1 d-block"></p>
+
+                <p>Số lượng tồn kho: <span id="stockQuantity">sản phẩm tồn: 0</span></p>
 
 
                 <!-- Tổng giá -->
                 <p id="totalPrice" class="fw-bold text-primary mt-2">
-                    Tổng: <span id="totalAmount" th:text="${#numbers.formatInteger(sanPham.price, 3, 'COMMA')}">0</span> VND
+                    Tổng: <span id="totalAmount" th:text="${#numbers.formatInteger(sanPham.price, 3, 'COMMA')}">0</span>
+                    VND
                 </p>
                 <!-- Nút hành động (Đặt trong col-md-6 để nằm dưới thông tin sản phẩm) -->
                 <div class="d-flex justify-content-end gap-2 mt-3">
                     <button type="submit" class="btn btn-outline-danger fw-bold">Thêm vào giỏ</button>
-                    <button type="submit" class="btn btn-danger fw-bold">Mua ngay</button>
+                    <!--                    <button type="submit" class="btn btn-danger fw-bold">Mua ngay</button>-->
                 </div>
             </div>
         </div>
     </form>
 </main>
-
+<div th:replace="Fragments/Users/footer :: footer"></div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
+
 <script>
+    // Hàm cập nhật số lượng tồn kho
     function updateStock() {
-        const selectedSize = document.getElementById('input[name="size"]:checked');
-        const selectedColor = document.getElementById('input[name="color"]:checked');
+        const stockDisplay = document.getElementById("stockQuantity");
+        const selectedColor = document.querySelector("input[name='colors']:checked");
+        const selectedSize = document.querySelector("input[name='size']:checked");
+        const selectedBrand = document.querySelector("input[name='brands']:checked");
+        if (selectedColor && selectedSize) {
+            const productId = document.querySelector("input[name = 'productId']").value; /* lấy product_id từ server (hoặc model Spring Boot) */
+            const colorId = selectedColor.value;
+            const sizeId = selectedSize.value;
+            const brandId = selectedBrand.value;
 
-
-        
+            // Gửi AJAX để lấy số lượng tồn kho từ API
+            fetch(`/sanPham/api/getStock?productId=${productId}&colorId=${colorId}&sizeId=${sizeId}&brandId=${brandId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Không có sản phẩm trong kho");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data !== undefined) {
+                        stockDisplay.textContent = `${data} sản phẩm có sẵn`;
+                    } else {
+                        stockDisplay.textContent = "Không có sản phẩm trong kho";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching stock:", error);
+                    stockDisplay.textContent = "Lỗi khi lấy thông tin tồn kho";
+                });
+        } else {
+            stockDisplay.textContent = "sản phẩm tồn: 0";
+        }
     }
+
+    // Lắng nghe sự kiện thay đổi của các radio button
+    document.querySelectorAll("input[name='colors'], input[name='size'], input[name='brands']").forEach(input => {
+        input.addEventListener("change", updateStock);
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const stockError = document.getElementById("stockError");
+        const stockDisplay = document.getElementById("stockQuantity"); // Số lượng tồn kho hiển thị trên giao diện
+        const decreaseButton = document.getElementById("decrease");
+        const increaseButton = document.getElementById("increase");
+        const quantityInput = document.getElementById("quantityInput");
+
+        const totalAmount = document.getElementById("totalAmount"); // Tổng tiền
+        const price = parseInt(document.getElementById("totalPrice").textContent.replace(/[^\d]/g, '')); // Giá sản phẩm
+
+
+        // Hàm cập nhật tổng tiền
+        function updateTotalPrice() {
+            const quantity = parseInt(quantityInput.value);
+            const total = price * quantity;
+            totalAmount.textContent = total.toLocaleString(); // Cập nhật tổng tiền
+        }
+
+        decreaseButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+                stockError.textContent = "";
+                updateTotalPrice();
+            }
+        });
+
+        increaseButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            let currentValue = parseInt(quantityInput.value);
+            let stock = parseInt(stockDisplay.textContent.match(/\d+/)[0]);
+            console.log(stock)
+
+            // Kiểm tra nếu số lượng tăng vượt quá tồn kho
+            if (currentValue + 1 > stock) {
+                stockError.textContent = "số lượng đã đạt đến giới hạn";// Hiển thị lỗi nếu vượt quá tồn kho
+            } else {
+                quantityInput.value = currentValue + 1;
+                stockError.textContent = "";
+                updateTotalPrice();
+            }
+        });
+        document.getElementById("quantityInput").addEventListener("input", function () {
+            let tonKho = parseInt(document.getElementById("stockQuantity").textContent); // Lấy giá trị tồn kho
+            let quantityInput = document.getElementById("quantityInput");
+
+            let inputQuantity = parseInt(quantityInput.value);
+
+            // Nếu giá trị nhập vào lớn hơn tồn kho
+            if (inputQuantity > tonKho) {
+                quantityInput.value = tonKho; // Đặt lại giá trị của input về tồn kho
+                updateTotalPrice()
+            } else {
+                stockError.textContent = ""; // Ẩn thông báo lỗi khi số lượng hợp lệ
+                updateTotalPrice();
+            }
+        });
+
+        updateTotalPrice();
+        document.querySelector("form").addEventListener("submit", function (event) {
+            event.preventDefault();
+        });
+    });
 </script>
 
 </html>
